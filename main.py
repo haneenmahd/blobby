@@ -8,10 +8,25 @@ images = input("Enter file names: ").split("  ")
 isReadDir = False
 activeDirectory = ""
 
+supported_image_files = ['.webp', '.tiff', '.tif', '.git', '.png', '.eps', '.raw', '.cr2', '.jpg', '.net', '.orf', '.sr2', '.jpeg', '.bmp']
+
+def validate_extensions(values: str(list)):
+    result_array = []
+
+    for value in values:
+        for support_ext in supported_image_files:
+            if value.endswith(support_ext):
+                result_array.append(value)
+
+    return result_array
+
+
 if images[0] == "dir":
     activeDirectory = images[1]
     images = list_dir(images[1])
     isReadDir = True
+
+    images = validate_extensions(images)
 
 images_converted = images
 
