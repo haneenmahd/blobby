@@ -30,9 +30,12 @@ def generate_path(path_for, use_cwd):
 output_file = generate_path(input("Enter output file name: "), False)
 
 def convert_images(image_list):
+    loop_count = 0
     result = []
 
     for current_image in image_list:
+        loop_count = loop_count + 1
+
         if isReadDir:
             c_image = activeDirectory + "\\" + current_image
 
@@ -42,10 +45,13 @@ def convert_images(image_list):
         # Converted Image
         converted_image = opened_image.convert('RGB')
 
-        if images[0] != current_image:
+        if loop_count == len(image_list):
+            result = result
+
+            converted_image.save(activeDirectory + "\\" + output_file, save_all=True, append_images=result)
+        else:
             result.append(converted_image)
         
-        converted_image.save(activeDirectory + "\\" + output_file, save_all=True, append_images=result)
 
 # Converting
 convert_images(images_converted)
