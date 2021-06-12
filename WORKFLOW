@@ -1,0 +1,8 @@
+# Before Building
+pip install pyinstaller
+
+# For Building the main program
+pyinstaller --onefile main.py
+
+# For Building GUI program
+pyinstaller --onefile --windowed gui/app.py

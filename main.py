@@ -4,24 +4,16 @@ from PIL import Image
 def list_dir(dir):
     return os.listdir(dir)
 
-s_images = input("Enter file names: ").split("  ")
-
-print(s_images)
-
-images = s_images
+images = input("Enter file names: ").split("  ")
+isReadDir = False
+activeDirectory = ""
 
 if images[0] == "dir":
+    activeDirectory = images[1]
     images = list_dir(images[1])
+    isReadDir = True
 
-    # Dir images array
-    d_images = ['dir']
-
-    for image in images:
-        d_images.append(image)
-
-    images = d_images
-
-images_converted = []
+images_converted = images
 
 def generate_path(path_for, use_cwd):
     if use_cwd == True:
@@ -35,28 +27,27 @@ def generate_path(path_for, use_cwd):
 
     return path_str
 
-
 output_file = generate_path(input("Enter output file name: "), False)
 
-for _image in images:
-    d_image = images[1] + "\\" + _image
-    # Generating exact path
-    if images[0] != "dir":
-        current_image = generate_path(_image)
-    elif images[0] == "dir":
-        current_image = s_images[1] + "\\" + image
+def convert_images(image_list):
+    result = []
 
-    print(current_image)
+    for current_image in image_list:
+        if isReadDir:
+            c_image = activeDirectory + "\\" + current_image
 
-    # Opening image
-    opened_image = Image.open(current_image)
+        # Opening image
+        opened_image = Image.open(c_image)
 
-    # Converted Image
-    converted_image = opened_image.convert('RGB')
+        # Converted Image
+        converted_image = opened_image.convert('RGB')
 
-    images_converted.append(converted_image)
+        if images[0] != current_image:
+            result.append(converted_image)
+        
+        converted_image.save(activeDirectory + "\\" + output_file, save_all=True, append_images=result)
 
-    converted_image.save(s_images[1] + "\\" + output_file, save_all=True, append_images=images_converted)
-
+# Converting
+convert_images(images_converted)
 
 print("Images converted successfully!")
